@@ -24,7 +24,13 @@ channel_secret = os.getenv('ChannelSecret', None)
 channel_access_token = os.getenv('ChannelAccessToken', None)
 gemini_key = os.getenv('GEMINI_API_KEY')
 imgage_prompt = '''
-Describe this image with scientific detail, reply in zh-TW:
+You are an expert in picture analysis. Please describe this picture in scientific details and analyze the type of picture.
+The image type analysis and processing methods are as follows:
+1. Information type
+Translated into Chinese and explained in scientific detail
+2. Question type
+Solve and analyze problems, summarize the solution process and final answer, and explain the process
+Finally, please respond in zh-TW:
 '''
 
 if channel_secret is None:
