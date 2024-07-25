@@ -58,9 +58,9 @@ async def handle_callback(request: Request):
     signature = request.headers['X-Line-Signature']
 
     # get request body as text
-    print('request.body:', request.body)
     body = await request.body()
     body = body.decode()
+    print(body)
 
     try:
         events = parser.parse(body, signature)
