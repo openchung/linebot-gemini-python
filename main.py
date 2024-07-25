@@ -73,9 +73,9 @@ async def handle_callback(request: Request):
         if (event.message.type == "text"):
             # Provide a default value for reply_msg
             msg = event.message.text
-            ret = generate_gemini_text_complete(f'{msg}, reply in zh-TW:')
-            # reply_msg = TextSendMessage(text=ret.text)
-            reply_msg = dummy_response()
+            # ret = generate_gemini_text_complete(f'{msg}, reply in zh-TW:')
+            ret = dummy_response()
+            reply_msg = TextSendMessage(text=ret.text)
             await line_bot_api.reply_message(
                 event.reply_token,
                 reply_msg
@@ -88,9 +88,9 @@ async def handle_callback(request: Request):
             async for s in message_content.iter_content():
                 image_content += s
             img = PIL.Image.open(BytesIO(image_content))
-
-            result = generate_result_from_image(img, imgage_prompt)
-            # reply_msg = TextSendMessage(text=result.text)
+            result = dummy_response()
+            # result = generate_result_from_image(img, imgage_prompt)
+            reply_msg = TextSendMessage(text=result.text)
             reply_msg = dummy_response()
             await line_bot_api.reply_message(
                 event.reply_token,
@@ -123,19 +123,4 @@ def generate_result_from_image(img, prompt):
     return response
 
 def dummy_response():
-    return FlexSendMessage(
-        alt_text='Flex Message',
-        contents={
-            "type": "bubble",
-            "body": {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                    {
-                        "type": "text",
-                        "text": "Hello, World!"
-                    }
-                ]
-            }
-        }
-    )
+    return {"text": "dummy response"}
