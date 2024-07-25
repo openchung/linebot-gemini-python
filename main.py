@@ -58,6 +58,7 @@ async def handle_callback(request: Request):
     signature = request.headers['X-Line-Signature']
 
     # get request body as text
+    print('request.body:', request.body)
     body = await request.body()
     body = body.decode()
 
@@ -91,7 +92,6 @@ async def handle_callback(request: Request):
             result = dummy_response()
             # result = generate_result_from_image(img, imgage_prompt)
             reply_msg = TextSendMessage(text=result.text)
-            reply_msg = dummy_response()
             await line_bot_api.reply_message(
                 event.reply_token,
                 reply_msg
@@ -123,4 +123,4 @@ def generate_result_from_image(img, prompt):
     return response
 
 def dummy_response():
-    return {"text": "dummy response"}
+    return 
