@@ -6,4 +6,5 @@ yfinance
 pydantic
 tiktoken
 Pillow
+python-dotenv
 git+https://github.com/ozgur/python-firebase

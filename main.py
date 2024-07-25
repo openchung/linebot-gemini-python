@@ -17,8 +17,8 @@ from io import BytesIO
 
 import aiohttp
 import PIL.Image
-
-
+from dotenv import load_dotenv
+load_dotenv()
 # get channel_secret and channel_access_token from your environment variable
 channel_secret = os.getenv('ChannelSecret', None)
 channel_access_token = os.getenv('ChannelAccessToken', None)
@@ -53,7 +53,6 @@ parser = WebhookParser(channel_secret)
 # Initialize the Gemini Pro API
 genai.configure(api_key=gemini_key)
 
-
 @app.post("/")
 async def handle_callback(request: Request):
     signature = request.headers['X-Line-Signature']
@@ -75,11 +74,13 @@ async def handle_callback(request: Request):
             # Provide a default value for reply_msg
             msg = event.message.text
             ret = generate_gemini_text_complete(f'{msg}, reply in zh-TW:')
-            reply_msg = TextSendMessage(text=ret.text)
+            # reply_msg = TextSendMessage(text=ret.text)
+            reply_msg = dummy_response()
             await line_bot_api.reply_message(
                 event.reply_token,
                 reply_msg
             )
+                
         elif (event.message.type == "image"):
             message_content = await line_bot_api.get_message_content(
                 event.message.id)
@@ -89,7 +90,8 @@ async def handle_callback(request: Request):
             img = PIL.Image.open(BytesIO(image_content))
 
             result = generate_result_from_image(img, imgage_prompt)
-            reply_msg = TextSendMessage(text=result.text)
+            # reply_msg = TextSendMessage(text=result.text)
+            reply_msg = dummy_response()
             await line_bot_api.reply_message(
                 event.reply_token,
                 reply_msg
@@ -119,3 +121,21 @@ def generate_result_from_image(img, prompt):
     response = model.generate_content([prompt, img], stream=True)
     response.resolve()
     return response
+
+def dummy_response():
+    return FlexSendMessage(
+        alt_text='Flex Message',
+        contents={
+            "type": "bubble",
+            "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "Hello, World!"
+                    }
+                ]
+            }
+        }
+    )
