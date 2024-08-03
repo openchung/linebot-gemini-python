@@ -7,4 +7,9 @@ pydantic
 tiktoken
 Pillow
 python-dotenv
+pytesseract 
+requests
+langchain
+langchain-google-genai
+langchain-community
 git+https://github.com/ozgur/python-firebase
