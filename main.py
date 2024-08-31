@@ -149,7 +149,7 @@ def generate_result_from_image(img, prompt):
     Generate a image vision result using the generative model.
     """
 
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    model = genai.GenerativeModel('gemini-1.5-flash-latest')
     response = model.generate_content([prompt, img], stream=True)
     response.resolve()
     return response
