@@ -45,7 +45,7 @@ When you receive a picture, please classify the picture first to determine what 
 - Interpret information content, summarize it, translate it into Chinese and explain it with scientific details
 
 2. Mathematics or programming problems
-- Solve problems according to examples and generate Java and Python programs.
+- Follow the example and generate functions of Java and Python code, and verify the executability of the program.
 
 3. Chinese language or history issues
 - Please find the answer based on the history or literary creation of each country and discuss the source.
