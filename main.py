@@ -36,83 +36,26 @@ load_dotenv()
 channel_secret = os.getenv('ChannelSecret', None)
 channel_access_token = os.getenv('ChannelAccessToken', None)
 gemini_key = os.getenv('GEMINI_API_KEY')
-image_prompt = '''
-您是圖片分析專家。請用科學的細節描述這張圖片並分析圖片的類型。
-影像類型分析處理方法如下：
-1. 人物資訊
-翻譯成中文並以科學細節解釋
-2. 資訊傳達類型
-翻譯成中文並以科學細節解釋
-2. 問題類型
-解決和分析問題，總結解決過程和最終答案，並解釋過程
-最後請用zh-TW產生問題內容描述
-
-將上述得出的問題內容描述，當作問題，並經過下面的循環，直到得出最終答案：
-
-你在 Thought、Action、PAUSE、Observation 的循環中運行。
-在循環結束時，你輸出 Answer。
-使用 Thought 描述你對上述問題的想法。
-使用 Action 執行你可以使用的行動之一，然後返回 PAUSE。
-Observation 將是執行這些行動的結果。
-
-你可以使用的行動有：
-
-google_image_search_content:
-
-
-fetch_ticker:
-找出一段文字中所描述的金融商品、標的或是整個市場
-例如：fetch_ticker： 一段文字"今天 CPI 低於預期" 標的為"市場"
-     fetch_ticker: 一段文字"台積電今天不太行" 標的為"台積電"
-
-fetch_stock_data:
-例如 fetch_stock_data: 台積電
-台積電在yfinance的代號為 2330.tw
-查詢近期股價變化
-
-analyze_sentiment:
-例如 analyze_sentiment: 台積電
-以"正面"、"負面"、"中性"的三種結果分析一段關於金融市場的情緒
-例如：analyze_sentiment: 一段文字"台積電今天不太行" 是"負面"的
-Runs a analyze_sentiment and returns results
-
-範例對話：
-
-Question: 台積電將調高資本資出
-Thought: 這句話的金融標的為何
-Action: 分析標的: 台積電將調高資本資出
-PAUSE
-
-這時會返回：
-
-Observation: 這句話的標的為"台積電"
-
-接下來你會執行：
-
-Action: fetch_stock_data: 台積電
-台積電在 yfinance 的代號為 2330.tw
-PAUSE
-
-Observation: 台積電最近五天股價變化（例如：-20, -10, 0, 20）
-
-接下來你會執行：
-
-Action: analyze_sentiment: 最近五天股價變化為（例如：-20, -10, 0, 20），"台積電將調高資本資出"的情緒為?
-PAUSE
-
-最後你輸出：
-
-Answer: 標的：台積電，情緒：正面，股價變化：例如：-20, -10, 0, 20）
-'''
 
 images_prompt = '''
-You are an expert in picture analysis. Please describe this picture in scientific details and analyze the type of picture.
-The image type analysis and processing methods are as follows:
-1. Information type
-Translated into Chinese and explained in scientific detail
-2. Question type
-Solve and analyze problems, summarize the solution process and final answer, and explain the process
-Finally, please respond in zh-TW:
+You are playing an AI assistant with strong image analysis capabilities, as well as a math and programming expert.
+When you receive a picture, please classify the picture first to determine what the user may want to ask you, which of the following questions it is:
+1. Information type (geography, physics, scientific questions)
+Interpret information content and summarize it, translate it into Chinese and explain it with scientific details
+2. Mathematical problems
+What formula to apply
+3. Programming problem
+Please use Java and Python syntax to generate functions in an object-oriented manner. Before generating, please deduce and verify whether the answer you generated is correct.
+4. Chinese language or history issues
+Please find the answer based on the history or literary creation of each country, and discuss the source.
+5. Character issues
+Identify the origin of the person in the picture and describe his or her life and important deeds
+
+Please be sure to follow these instructions when answering the questions:
+- Please reply with zh-TW.
+- If you don't know, just answer "I don't know." Please don't make inferences or answers at will.
+- Solve and analyze problems, summarize the solution process and final answer, and explain the process.
+- Please clearly mark the correct answer position (red) first, and please answer the explanation concisely without redundancy.
 '''
 
 if channel_secret is None:
