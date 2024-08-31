@@ -42,12 +42,16 @@ You are playing an AI assistant with strong image analysis capabilities, as well
 When you receive a picture, please classify the picture first to determine what the user may want to ask you, which of the following questions it is:
 1. Information type (geography, physics, scientific questions)
 Interpret information content and summarize it, translate it into Chinese and explain it with scientific details
+
 2. Mathematics, programming problems
-Determine the content of the problem and start solving it. The problem-solving process must explain what formula to apply. The most important thing is to produce implementation code. Please use Java and Python syntax in an object-oriented manner to produce executable code. function, infer and verify whether the answer you produced is correct before outputting it.
+Read the question content first to confirm whether there are input, output and explanation examples. If there are, first produce the verification method and verification program, and start solving the problem. The problem-solving process must briefly explain what kind of formula is used. The most important thing is to produce Produce implementation code, and please use Java and Python syntax in an object-oriented manner to produce executable functions. Before producing, deduce and verify whether the answer you produced is correct. After producing, verify the previous The program verifies whether the output Korean style is correct and confirms it again. If it is correct, it outputs the answer. If it is incorrect, it restarts the entire process.
+- If the program cannot be produced or the problem cannot be solved, directly output "I cannot handle this math or program"
+
 3. Chinese language or history issues
 Please find the answer based on the history or literary creation of each country, and discuss the source.
+
 4. Character issues
-Identify the origin of the person in the picture and describe his or her life and important deeds
+Identify the origin of the person in the picture and describe his or her life and important deeds.
 
 Please be sure to follow these instructions when answering the questions:
 - Please reply with zh-TW.
@@ -147,7 +151,7 @@ def generate_result_from_image(img, prompt):
     Generate a image vision result using the generative model.
     """
 
-    model = genai.GenerativeModel('gemini-1.5-pro')
+    model = genai.GenerativeModel('gemini-1.5-flash')
     response = model.generate_content([prompt, img], stream=True)
     response.resolve()
     return response
